@@ -7,7 +7,7 @@ Prediksi harga yang dinamis ini akan dapat membantu konsumen dalam menghemat uan
 
 Terdapat beberapa faktor-faktor yang berpengaruh pada tiket pesawat. Contohnya seperti maskapai penerbangan itu sendiri, kota tujuan, jumlah pemberhentian, waktu keberangkatan, waktu tiba, dan waktu penerbangan [[3](https://www.atlantis-press.com/proceedings/icemed-22/125975408)]. Dengan menggunakan dataset yang memiliki beberapa variabel ini, maka harga tiket pesawat dapat diestimasi dengan mempertimbangkan korelasi antar faktor-faktor tersebut.
 
-Prediksi harga tiket pesawat ini dapat dilakukan menggunakan berbagai teknik mulai dari teknik statistik seperti regresi hingga menggunakan teknik *machine learning* [[4](https://arxiv.org/abs/1705.07205)] [[5](https://dergipark.org.tr/en/pub/veri/issue/64538/962789)]
+Prediksi harga tiket pesawat ini dapat dilakukan menggunakan berbagai teknik mulai dari teknik statistik seperti regresi hingga menggunakan teknik *machine learning* [[4](https://arxiv.org/abs/1705.07205)] [[5](https://dergipark.org.tr/en/pub/veri/issue/64538/962789)] *Machine learning* dipilih untuk menyelesaikan masalah ini karena kemampuannya dalam menangani pola yang kompleks dan perubahan dinamis dalam data. Di mana sebuah model yang telah dilatih untuk memprediksi harga tiket pesawat dapat membantu konsumen dalam memesan tiket dengan harga yang optimum.
 
 
 ---
@@ -57,22 +57,6 @@ Sumber dataset : https://www.kaggle.com/datasets/shubhambathwal/flight-price-pre
 - Duration: Fitur yang menunjukan lamanya durasi penerbangan. Data dihitung dalam satuan jam.
 - Days Left: Variabel ini menyimpan informasi waktu selang antara pemesanan tiket dengan waktu keberangkatan. Data dihitung dalam satuan hari.
 - Price: Variabel yang menyimpan informasi harga dari tiket pesawat. Data ini disimpan dalam format integer.
-
-Dataset yang telah diimport kemudian akan dicek beberapa hal, yaitu : data duplikat, data yang hilang, serta data outlier. 
-
-Dalam dataset ini tidak ditemukannya data duplikat atau data yang hilang. Data outlier pada dataset diproses dengan melakukan *dropping* atau menghapus sejumlah sampel data. Identifikasi data outlier menggunakan metode *Interquartile Range* (IQR).
-
-Metode IQR dilakukan dengan menghitung nilai IQR dengan cara : 
-
-$$IQR = Q3 - Q1$$
-
-dengan IQR merupakan *interquartile range*, Q3 adalah kuartil ketiga dari dataset, dan Q1 adalah kuartil pertama dari dataset. Setelah nilai IQR diketahui, dihitung batas atas dan batas bawah dari dataset dimana data yang berada di luar rentang batas ini diidentifikasi sebagai outlier. Perhitungan batas atas dan bawah dapat dihitung sebagai berikut :
-
-- Batas atas : $Q_1 - 1.5 \cdot IQR$
-
-- Batas bawah : $Q_3 + 1.5 \cdot IQR$
-
-Setelah mengidentifikasi data outlier dan melakukan *dropping* data. Jumlah dataset berkurang dari 300261 sampel data menjadi 297920 sampel data. 
 
 ### Exploratory Data Analysis
 
@@ -209,15 +193,40 @@ Fitur 'airline' memiliki jumlah kategori yang sangat banyak yang tidak efisien u
 
 Preparasi data merupakan tahapan yang dilakukan untuk mempersiapkan dataset sebelum dimasukan ke proses pemodelan. Tahapan ini melakukan transformasi pada data agar memiliki bentuk yang cocok ketika dimodelkan nanti. Proses preparasi data yang dilakukan pada bagian ini yaitu :
 
+- *Data cleaning*
 - *Encoding* fitur kategori
 - Pembagian dataset
 - Standarisasi
+
+### *Data Cleaning*
+
+Dataset yang telah diimport kemudian akan dicek beberapa hal, yaitu : data duplikat, data yang hilang, serta data outlier. 
+
+Dalam dataset ini tidak ditemukannya data duplikat atau data yang hilang. Data outlier pada dataset diproses dengan melakukan *dropping* atau menghapus sejumlah sampel data. Identifikasi data outlier menggunakan metode *Interquartile Range* (IQR).
+
+Metode IQR dilakukan dengan menghitung nilai IQR dengan cara : 
+
+$$IQR = Q3 - Q1$$
+
+dengan IQR merupakan *interquartile range*, Q3 adalah kuartil ketiga dari dataset, dan Q1 adalah kuartil pertama dari dataset. Setelah nilai IQR diketahui, dihitung batas atas dan batas bawah dari dataset dimana data yang berada di luar rentang batas ini diidentifikasi sebagai outlier. Perhitungan batas atas dan bawah dapat dihitung sebagai berikut :
+
+- Batas atas : $Q_1 - 1.5 \cdot IQR$
+
+- Batas bawah : $Q_3 + 1.5 \cdot IQR$
+
+Setelah mengidentifikasi data outlier dan melakukan *dropping* data. Jumlah dataset berkurang dari 300261 sampel data menjadi 297920 sampel data. 
+
+### *Encoding* data kategori
 
 Proses *encoding* adalah proses mengubah data dari satu bentuk menjadi bentuk lainnya. Proses ini dilakukan untuk mengubah data fitur kategori yang masih berbentuk text menjadi data numerik yang dapat diproses pada pelatihan nantinya.
 
 Salah satu metode *encoding* adalah menggunakan metode *label encoding*. Metode ini merubah setiap nilai kategori menjadi nilai numerik yang unik. Contohnya adalah merubah fitur kategori 'departure_time', seperti 'morning' menjadi 1, 'afternoon' menjadi 2, dan seterusnya. Proses ini dilakukan menggunakan LabelEncoder() dari pustaka scikit-learn.
 
+### Pembagian Dataset
+
 Selanjutnya adalah proses pembagian dataset. Proses ini dilakukan untuk membagi dataset menjadi data latih (*training*) dan data uji (*test*). Proses ini dilakukan untuk menyimpan sebagian data untuk menguji model selain dari data yang digunakan ketika pelatihan. Pemisahan ini memastikan bahwa pengujian model dilakukan dengan data baru yang tidak pernah dilihat model sebelumnya. Pembagian dataset dilakukan dengan proporsi 90 % data pelatihan dan 10 % data uji.
+
+### Standarisasi
 
 Proses standarisasi merupakan tahapan yang dilakukan untuk menyeragamkan nilai-nilai pada fitur. Beberapa algoritma *machine learning* seperti regresi linear sangat sensitf terhadap perbedaan skala pada dataset. Proses ini juga akan membuat pemodelan algoritma lebih cepat serta meningkatkan kinerja model.
 
@@ -286,19 +295,19 @@ Parameter yang ditentukan pada algoritma ini adalah 'n_estimators' untuk menentu
 - Adaptive Boost
 
 ```python
-boosting = AdaBoostRegressor(learning_rate=0.05, random_state=123)
+boosting = AdaBoostRegressor(n_estimators = 100, learning_rate=0.05, random_state=123)
 ```
 
-Pembuatan model ini menggunakan parameter 'learning_rate' sebesar 0.05 untuk mengontrol kecepatan belajar model. 'random_state' digunakan untuk mendapatkan keadaan model yang sama ketika dilatih.
+Pembuatan model ini menggunakan parameter 'n_estimators' untuk menentukan jumlah *decision tree* sebagai model prediksi lemah yang digunakan pada model.'learning_rate' sebesar 0.05 untuk mengontrol kecepatan belajar model. 'random_state' digunakan untuk mendapatkan keadaan model yang sama ketika dilatih.
 
 
 - XGBoost
 
 ```python
-xgb = xgboost.XGBRegressor()
+xgb = xgboost.XGBRegressor(n_estimators = 100, learning_rate=0.05, random_state=123)
 ```
 
-Pembuatan model XGBoost tidak menggunakan parameter apapun.
+Pembuatan model XGBoost tidak menggunakan parameter 'n_estimators' untuk menentukan jumlah *decision tree* sebagai model prediksi lemah yang digunakan pada model.'learning_rate' sebesar 0.05 untuk mengontrol kecepatan belajar model. 'random_state' digunakan untuk mendapatkan keadaan model yang sama ketika dilatih.
 
 ---
 ## Evaluation
@@ -319,25 +328,27 @@ Berikut perbandingan performa antara keempat model menggunakan tiga metrik evalu
 
 |       | KNN      | *Random Forest* | *Adaptive Boost* | *XGBoost* |
 | ----- | -------- | --------------- | ---------------- | --------- |
-| MSE   | 17522.92 | 7067.60         | 33057.71         | 733248.00 |
-| $R^2$ | 0.9662   | 0.9863          | 0.9362           | -0.4141   |
-| MAPE  | 0.1759   | 0.0695          | 0.2775           | 0.5028    |
+| MSE   | 17522.92 | 7067.60         | 33022.24         | 729186.55 |
+| $R^2$ | 0.9662   | 0.9863          | 0.9363           | -0.4063   |
+| MAPE  | 0.1759   | 0.0695          | 0.2740           | 0.4850    |
 
-Tabel 1. Perbandingan Performa Model
+Tabel 1. Perbandingan Performa Model pada Dataset Uji
 
-Berdasarkan data dari Tabel 1, model *random forest* memiliki hasil performa yang paling baik dibandingkan dengan ketiga model lainnya dengan parameter MSE sebesar 7067.6, $R^2$ sebesar 0.9863, dan MAPE sebesar 0.0695. 
+Berdasarkan data dari Tabel 1, model *random forest* memiliki hasil performa yang paling baik dibandingkan dengan ketiga model lainnya dengan parameter MSE sebesar 7067.6, $R^2$ sebesar 0.9863, dan MAPE sebesar 0.0695. Terlihat juga model XGBoost memiliki performa yang buruk dibandingkan ketiga model. 
 
-Visualisasi dari perbandingan performa antara setiap model dapat ditunjukan pada Gambar 20. Dimana performa dataset latih dan uji dari model *random forest* lebih baik dibandingkan model lainnya.
+Visualisasi dari perbandingan performa antara setiap model dapat ditunjukan pada Gambar 20. Dimana performa dataset latih dan uji dari keempat model dapat dibandingkan. model *random forest* lebih baik dibandingkan model lainnya.
 
 ![download (8)](https://github.com/fadhillaha/project-pertama-predictive-analysis/assets/40687068/89edc7fb-80c3-449a-aadd-1e15c2e8abc3)
 
 Gambar 20. Grafik Batang Perbandingan Model Berdasarkan Metrik MAPE
 
+Gambar 20 menunjukan bahwa model *random forest* memiliki performa yang lebih baik pada dataset latih dan uji. Model XGBoost memiliki performa yang baik pada dataset latih, namun memiliki performa yang buruk pada dataset uji. Hal ini dapat menandakan adanya *overfitting* pada model dan diperlukannya pengaturan hyperparameter lebih lanjut untuk mendapatkan hasil yang lebih baik.
+
 Hal lain yang dapat dilakukan adalah menguji hasil prediksi dari keempat model terhadap nilai harga tiket yang sebenarnya. Hasilnya dapat dilihat pada Tabel 2.
 
 | y_true | KNN     | *Random Forest* | *Adaptive Boosting* | XGBoost |
 | ------ | ------- | --------------- | ------------------- | ------- |
-| 60396  | 49437.1 | 60396.0         | 58752.7             | 5216.0  |
+| 60396  | 49437.1 | 60396.0         | 57917.3	           | 5376.3  |
 
 Tabel 2. Perbandingan Hasil Prediksi Model terhadap Nilai Harga Tiket Sebenarnya.
 
