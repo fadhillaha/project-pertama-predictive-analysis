@@ -338,7 +338,7 @@ Berdasarkan data dari Tabel 1, model *random forest* memiliki hasil performa yan
 
 Visualisasi dari perbandingan performa antara setiap model dapat ditunjukan pada Gambar 20. Dimana performa dataset latih dan uji dari keempat model dapat dibandingkan. model *random forest* lebih baik dibandingkan model lainnya.
 
-![download (8)](https://github.com/fadhillaha/project-pertama-predictive-analysis/assets/40687068/89edc7fb-80c3-449a-aadd-1e15c2e8abc3)
+![download (20)](https://github.com/fadhillaha/project-pertama-predictive-analysis/assets/40687068/d6b33c48-19b6-4269-bb20-760a274ad027)
 
 Gambar 20. Grafik Batang Perbandingan Model Berdasarkan Metrik MAPE
 
